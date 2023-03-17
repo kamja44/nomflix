@@ -1,46 +1,173 @@
-# Getting Started with Create React App
+# react-router-dom
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. Routers 폴더 생성
+2. Routers 폴더 안에 path로 사용할 파일 생성
 
-## Available Scripts
+- path="/" -> Home.tex
+- path="tv" -> Tv.tsx
+- path="/search" -> Search.tsx
 
-In the project directory, you can run:
+3. 생성한 파일을 Component로 사용한다.
 
-### `npm start`
+```js
+function App() {
+  return (
+    <Router>
+      <Switch>
+        <Route path="/">
+          <Home />
+        </Route>
+        <Route path="/tv">
+          <Tv />
+        </Route>
+        <Route path="/search">
+          <Search />
+        </Route>
+      </Switch>
+    </Router>
+  );
+}
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# header 생성
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. Components 폴더 생성(공통으로 사용될 코드 담는 폴더)
+2. Compoenets 폴더 안에 Header.tsx파일 생성
 
-### `npm test`
+- 공통을 사용될 header파일
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Header는 2개의 column을 가진다.
 
-### `npm run build`
+## Netflix 로고 애니메이션
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- framer-motion 이용
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+fill-opacity(fillOpacity)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- attribute의 opacity의 퍼센트를 의미한다.
 
-### `npm run eject`
+animation을 단계적으로 실행시킬 수 있다.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```js
+const logoVariants = {
+  normal: {
+    fillOpacity: 1,
+  },
+  active: {
+    fillOpacity: [0, 1, 0],
+    transition: {
+      repeat: Infinity,
+    },
+  },
+};
+<Logo
+  variants={logoVariants}
+  initial="normal"
+  whileHover="active"
+  xmlns="http://www.w3.org/2000/svg"
+  width="1024"
+  height="276.742"
+  viewBox="0 0 1024 276.742"
+>
+  <motion.path d="" />
+</Logo>;
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- 처음에는 0, 1, 0 순으로 애니메이션을 실행시킬 수 있다.
+  - 즉, 배열로 단계만 지정해주면 motion(framer-motion)이 애니메이션을 단계적으로 실행한다.
+- transition을 infinity로 지정함으로써 애니메이션을 무한히 반복한다
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# header의 li 선택시 animation
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## element를 정중앙에 배치시킬때의 CSS 코드
 
-## Learn More
+- 정중앙시킬 요소의 CSS를 left: 0, right: 0, margin: 0 auto로 설정한다.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```js
+const Circle = styled.span`
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: ${(props) => props.theme.red};
+  border-radius: 50%;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+`;
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Link component
+
+- react-router-dom
+
+도메인이 같을 때(페이지의 이동이 없어야 할 때) <a>태그를 사용하면 안된다.
+
+- <a> 태그 사용 시 페이지가 새로고침되며 새로운 페이지로 이동
+- 즉, <Link> component를 이용한다.
+
+Header.tsx
+
+```js
+<Items>
+  <Item>
+    <Link to="/">
+      Home <Circle />
+    </Link>
+  </Item>
+  <Item>
+    <Link to="/tv">
+      TV Shows <Circle />
+    </Link>
+  </Item>
+</Items>
+```
+
+index.tsx
+
+```js
+<Router>
+  <Header />
+  <Switch>
+    <Route path="/tv">
+      <Tv />
+    </Route>
+    <Route path="/search">
+      <Search />
+    </Route>
+    <Route path="/">
+      <Home />
+    </Route>
+  </Switch>
+</Router>
+```
+
+- Router의 path="/"인 component가 가장 밑으로 가야 한다.
+  - /, /tv, /search 순으로 있을 때 path가 /인 component가 무조건 참이기 때문
+
+## route match
+
+- react-router-dom
+- useRouteMatch는 우리에게 이 route 안에 있는지 다른 곳에 있는지 알려준다.
+- useRouteMath를 콘솔로 찍어보면 isExact, params, path, url이 나온다.
+  - 이 중 isExact가 현재 url 상에 위치하는지 boolean 값으로 나타낸다.
+
+```js
+const homeMatch = useRouteMatch("/");
+const tvMatch = useRouteMatch("/tv");
+console.log(homeMatch, tvMatch);
+return (
+  <Nav>
+    <Col>
+      <Items>
+        <Item>
+          <Link to="/">Home {homeMatch?.isExact && <Circle />}</Link>
+        </Item>
+        <Item>
+          <Link to="/tv">TV Shows {tvMatch && <Circle />}</Link>
+        </Item>
+      </Items>
+    </Col>
+  </Nav>
+);
+```
