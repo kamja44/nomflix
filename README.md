@@ -161,13 +161,49 @@ return (
     <Col>
       <Items>
         <Item>
-          <Link to="/">Home {homeMatch?.isExact && <Circle />}</Link>
+          <Link to="/">
+            Home {homeMatch?.isExact && <Circle layoutId="circle" />}
+          </Link>
         </Item>
         <Item>
-          <Link to="/tv">TV Shows {tvMatch && <Circle />}</Link>
+          <Link to="/tv">
+            TV Shows {tvMatch && <Circle layoutId="circle" />}
+          </Link>
         </Item>
       </Items>
     </Col>
   </Nav>
 );
 ```
+
+# search animation
+
+```js
+const [searchOpen, setSearchOpen] = useState(false);
+const toggleSearch = () => setSearchOpen((prev) => !prev);
+const Input = styled(motion.input)`
+  transform-origin: right center;
+  position: absolute;
+  left: -150px;
+`;
+<Search>
+<motion.svg
+onClick={toggleSearch}
+animate={{ x: searchOpen ? -180 : 0 }}
+transition={{ type: "linear" }}
+fill="currentColor"
+viewBox="0 0 20 20"
+xmlns="http://www.w3.org/2000/svg"
+>
+<Input
+  placeholder="Search for movie or tv show..."
+  transition={{ type: "linear" }}
+  animate={{ scaleX: searchOpen ? 1 : 0 }}
+/>
+```
+
+## transform-origin
+
+- 변화가 시작하는 위치를 의미한다.
+- transform-origin: right center;
+  - 오른쪽에서부터 animation이 실행된다.
