@@ -207,3 +207,66 @@ xmlns="http://www.w3.org/2000/svg"
 - 변화가 시작하는 위치를 의미한다.
 - transform-origin: right center;
   - 오른쪽에서부터 animation이 실행된다.
+
+## search animation을 코드로부터 실행
+
+- toggleSearch에서 animation 실행
+- useAnimation hook 사용
+
+# useAnimation
+
+- 애니메이션들을 동시에 실행시키고 싶을 때 유용하다.
+
+```js
+const inputAnimation = useAnimation();
+const toggleSearch = () => {
+  if (searchOpen) {
+    inputAnimation.start({
+      scaleX: 0,
+    });
+  } else {
+    inputAnimation.start({
+      scaleX: 1,
+    });
+  }
+  setSearchOpen((prev) => !prev);
+};
+return (
+  <Input
+    animate={inputAnimation}
+    initial={{ scaleX: 0 }}
+    placeholder="Search for movie or tv show..."
+    transition={{ type: "linear" }}
+  />
+);
+```
+
+# useScroll
+
+- scroll 감지 이벤트
+- 스크롤을 움직일 때 제일 밑에서부터 얼마나 멀리 있는지를 알려준다.
+
+```js
+const navVariants = {
+  top: {
+    backgroundColor: "rgba(0,0,0,0)",
+  },
+  scroll: {
+    backgroundColor: "rgba(0,0,0,1)",
+  },
+};
+function(){
+const navAnimation = useAnimation();
+  const { scrollY } = useScroll();
+  useEffect(() => {
+    scrollY.onChange(() => {
+      if (scrollY.get() > 80) {
+        navAnimation.start("scroll");
+      } else {
+        navAnimation.start("top");
+      }
+    });
+  }, [scrollY]);
+  <Nav variants={navVariants} animate={navAnimation} initial={"top"}>
+}
+```
