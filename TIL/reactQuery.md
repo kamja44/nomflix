@@ -43,3 +43,38 @@ const { data, isLoading } = useQuery(["movies", "nowPlaying"], getMovies);
 ```
 
 ## 리엑트 쿼리를 이용하여 이미지 가져오기
+
+utils.ts
+
+```js
+export function makeImagePath(id: string, format?: string) {
+  return `https;//image.tmdb.org/t/p/${format ? format : "original"}/${id}`;
+}
+```
+
+## API의 타입 정의
+
+api.ts
+
+- api.ts 파일에서 정의한 IGetMoviesResult 타입을 Home.tsx의 useQuery에 사용
+
+```js
+interface IMovie {
+  id: number;
+  backdrop_path: string;
+  poster_path: string;
+  title: string;
+  overview: string;
+}
+
+export interface IGetMoviesResult {
+  dates: {
+    maximum: string,
+    minimun: string,
+  };
+  page: number;
+  results: IMovie[];
+  total_pages: number;
+  total_results: number;
+}
+```
