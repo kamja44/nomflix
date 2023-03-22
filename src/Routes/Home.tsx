@@ -59,8 +59,15 @@ const Box = styled(motion.div)<{ bgPhoto: string }>`
   height: 200px;
   color: red;
   font-size: 64px;
+  &:first-child {
+    transform-origin: center left;
+  }
+  &:last-child {
+    transform-origin: center right;
+  }
 `;
 
+// Slider Variants
 const rowVariants = {
   hidden: {
     x: window.outerWidth + 5,
@@ -73,6 +80,20 @@ const rowVariants = {
   },
 };
 const offset = 6;
+
+const BoxVariants = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    scale: 1.3,
+    y: -50,
+    transition: {
+      delay: 0.3,
+      type: "tween",
+    },
+  },
+};
 
 function Home() {
   const { data, isLoading } = useQuery<IGetMoviesResult>(
@@ -123,6 +144,9 @@ function Home() {
                   .map((movie) => (
                     <Box
                       key={movie.id}
+                      transition={{ type: "tween" }}
+                      variants={BoxVariants}
+                      whileHover="hover"
                       bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
                     />
                   ))}

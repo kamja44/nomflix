@@ -149,3 +149,54 @@ const increaseIndex = () => {
     ));
 }
 ```
+
+# Slider Anmiation
+
+## 마우스 오버 시 이미지 확대 및 애니메이션이 끝나고 다른 애니메이션이 실행되도록 딜레이 설정
+
+```js
+const BoxVariants = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    scale: 1.3,
+    transition: {
+      delay: 1,
+    },
+  },
+};
+
+<Box
+  key={movie.id}
+  variants={BoxVariants}
+  whileHover="hover"
+  initial="normal"
+  bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+/>;
+```
+
+## transform-origin
+
+- 가장 왼쪽과 오른쪽의 Box는 한쪽 방향으로만 확대되게 설정
+
+```js
+const Box =
+  styled(motion.div) <
+  { bgPhoto: string } >
+  `
+  background-color: white;
+  background-image: url(${(props) => props.bgPhoto});
+  background-size: cover;
+  background-position: center, center;
+  height: 200px;
+  color: red;
+  font-size: 64px;
+  &:first-child {
+    transform-origin: center left; // 오른쪽으로만 확대
+  }
+  &:last-child{
+    transform-origin: center right; // 왼쪽으로만 확대
+  }
+`;
+```
