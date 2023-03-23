@@ -24,6 +24,7 @@ const Logo = styled(motion.svg)`
   width: 95px;
   height: 25px;
   fill: ${(props) => props.theme.red};
+  cursor: pointer;
   path {
     stroke-width: 6px;
     stroke: white;
@@ -137,10 +138,14 @@ function Header() {
   const onValid = (data: IForm) => {
     history.push(`/search?keyword=${data.keyword}`);
   };
+  const LogoClick = () => {
+    history.push(`/`);
+  };
   return (
     <Nav variants={navVariants} animate={navAnimation} initial={"top"}>
       <Col>
         <Logo
+          onClick={LogoClick}
           variants={logoVariants}
           initial="normal"
           whileHover="active"
