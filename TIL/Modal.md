@@ -82,3 +82,47 @@ Home.tsx
 ) : null}
 </AnimatePresence>
 ```
+
+# Overlay
+
+- Overlay 클릭 시 원래의 URL로 돌아가기
+
+Home.tsx
+
+```js
+const Overlay = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
+
+const onOverlayClick = () => history.goBack();
+<Overlay onClick={onOverlayClick} />;
+```
+
+# 스크롤을 해도 화면 가운데에 모달창 띄우기
+
+- framer-motion의 useScroll 사용
+
+```JS
+const {scrollY} = useScroll();
+<motion.div
+    layoutId={bigMovieMatch.params.movieId}
+    style={{
+    position: "absolute",
+    width: "40vw",
+    height: "80vh",
+    backgroundColor: "red",
+    top: scrollY.get() + 100,
+    left: 0,
+    right: 50,
+    margin: "0 auto",
+    }}
+/>
+```
+
+- 즉, 사용자의 위치를 감지해서 그 위치에 창을 띄운다.
+
+- motion의 value를 사용하기 위해선 get()을 사용해야 한다.
