@@ -162,7 +162,18 @@ const BigOverview = styled.p`
   padding: 20px;
   color: ${(props) => props.theme.white.lighter};
   position: relative;
-  top: -60px;
+  top: -50px;
+  height: 10vh;
+  overflow: scroll;
+`;
+// Modal > boxContent
+const BoxContent = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  top: -20px;
+  position: relative;
+  height: 60px;
+  text-align: center;
 `;
 
 function Home() {
@@ -173,6 +184,7 @@ function Home() {
     ["movies", "nowPlaying"],
     getMovies
   );
+  console.log(data?.results[0]);
   // index system
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
@@ -195,7 +207,7 @@ function Home() {
     data?.results.find(
       (movie) => String(movie.id) === bigMovieMatch.params.movieId
     );
-
+  console.log(clickedMovie);
   return (
     <Wrapper>
       {isLoading ? (
@@ -263,7 +275,24 @@ function Home() {
                         }}
                       />
                       <BigTitle>{clickedMovie.title}</BigTitle>
+                      <h2
+                        style={{
+                          position: "relative",
+                          top: "-60px",
+                          marginLeft: "20px",
+                        }}
+                      >
+                        Overview
+                      </h2>
                       <BigOverview>{clickedMovie.overview}</BigOverview>
+                      <BoxContent>
+                        <div>
+                          popularity: {Math.ceil(clickedMovie.popularity)}
+                        </div>
+                        <div>release_Date: {clickedMovie.release_date}</div>
+                        <div>vote_Average: {clickedMovie.vote_average}</div>
+                        <div>vote_Count: {clickedMovie.vote_count}</div>
+                      </BoxContent>
                     </>
                   )}
                 </BigMovie>
