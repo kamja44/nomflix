@@ -111,14 +111,14 @@ const {scrollY} = useScroll();
 <motion.div
     layoutId={bigMovieMatch.params.movieId}
     style={{
-    position: "absolute",
-    width: "40vw",
-    height: "80vh",
-    backgroundColor: "red",
+    position: absolute,
+    width: 40vw,
+    height: 80vh,
+    backgroundColor: red,
     top: scrollY.get() + 100,
     left: 0,
     right: 50,
-    margin: "0 auto",
+    margin: 0 auto,
     }}
 />
 ```
@@ -126,3 +126,32 @@ const {scrollY} = useScroll();
 - 즉, 사용자의 위치를 감지해서 그 위치에 창을 띄운다.
 
 - motion의 value를 사용하기 위해선 get()을 사용해야 한다.
+
+# 모달창에 배경 띄우기
+
+```js
+const clickedMovie =
+  bigMovieMatch?.params.movieId &&
+  data?.results.find(
+    (movie) => String(movie.id) === bigMovieMatch.params.movieId
+  );
+
+{
+  clickedMovie && (
+    <>
+      <BigCover
+        style={{
+          backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
+            clickedMovie.backdrop_path,
+            "w500"
+          )})`,
+        }}
+      />
+      <BigTitle>{clickedMovie.title}</BigTitle>
+    </>
+  );
+}
+```
+
+- bigMovieMatch가 존재할 때, movie의 id와 bigMovieMatch의 id가 같은것을 find한다.
+- clickedMovie가 존재할 때 fragement(<></>)를 출력한다.
