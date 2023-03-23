@@ -164,6 +164,7 @@ const BigOverview = styled.p`
   position: relative;
   top: -60px;
 `;
+
 function Home() {
   const history = useHistory();
   const bigMovieMatch = useRouteMatch<{ movieId: string }>("/movies/:movieId");
@@ -194,7 +195,7 @@ function Home() {
     data?.results.find(
       (movie) => String(movie.id) === bigMovieMatch.params.movieId
     );
-  console.log(clickedMovie);
+
   return (
     <Wrapper>
       {isLoading ? (
